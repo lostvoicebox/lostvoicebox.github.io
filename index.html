@@ -190,22 +190,25 @@
             container.appendChild(essayDiv);
         });
 
-        function openEssay(title, file) {
-            fetch(file)
-                .then(response => response.text())
-                .then(text => {
-                    const formattedText = text.replace(/\*(.*?)\*/g, "<i>$1</i>");
-                    
-                    document.getElementById('modalTitle').innerText = title;
-                    document.getElementById('modalContent').innerHTML = formattedText; 
-                    const modal = document.getElementById('myModal');
-                    modal.style.display = "block";
-                        requestAnimationFrame(() => {
-                            requestAnimationFrame(() => {
-                                modal.classList.add('show');
-                            });
-                        });
-        }
+            function openEssay(title, file) {
+                fetch(file)
+                    .then(response => response.text())
+                    .then(text => {
+                        const formattedText = text.replace(/\*(.*?)\*/g, "<i>$1</i>");
+                
+                document.getElementById('modalTitle').innerText = title;
+                document.getElementById('modalContent').innerHTML = formattedText; 
+                const modal = document.getElementById('myModal');
+                
+                modal.style.display = "block";
+    
+                requestAnimationFrame(() => {
+                    requestAnimationFrame(() => {
+                        modal.classList.add('show');
+                    });
+                });
+            });
+    }
 
         function closeModal() {
             const modal = document.getElementById('myModal');
