@@ -217,10 +217,11 @@
         }
 
         window.onclick = function(event) {
-            if (event.target == theModal) {
-                closeModal();
-            }
+        const modal = document.getElementById('myModal');
+        if (event.target == modal) {
+            closeModal();
         }
+    }
     </script>
 </body>
 </html>
