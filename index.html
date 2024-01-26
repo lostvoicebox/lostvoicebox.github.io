@@ -4,143 +4,154 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Voice Box</title>
-    <style>
-        body {
-            font-family: "Century Gothic", CenturyGothic, Geneva, AppleGothic, sans-serif;
-            background-color: #000;
-            color: #fff;
-            margin: 0;
-            padding: 0;
-            padding-bottom: 50px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            font-weight: 400;
-        }
+  <style>
+      body {
+          font-family: "Century Gothic", CenturyGothic, Geneva, AppleGothic, sans-serif;
+          background-color: #000;
+          color: #fff;
+          margin: 0;
+          padding: 0;
+          padding-bottom: 50px;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          font-weight: 400;
+      }
 
-        .logo {
-            margin-bottom: 10px;
-            text-align: center;
-            width: 100%;
-        }
+      .logo {
+          margin-bottom: 10px;
+          text-align: center;
+          width: 100%;
+      }
 
-        .logo img {
-            max-width: 300px;
-            height: auto;
-        }
+      .logo img {
+          max-width: 300px;
+          height: auto;
+      }
 
-        .container {
-            width: 90%;
-            max-width: 800px;
-        }
+      .container {
+          width: 90%;
+          max-width: 800px;
+      }
 
-        .essay {
-            background-color: #111;
-            margin: 15px 0;
-            padding: 20px;
-            border-radius: 10px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
+      .essay {
+          background-color: #111;
+          margin: 15px 0;
+          padding: 20px;
+          border-radius: 10px;
+          cursor: pointer;
+          transition: all 0.3s ease;
+      }
 
-        .essay:hover {
-            background-color: #222;
-        }
+      .essay:hover {
+          background-color: #222;
+      }
 
-        .title {
-            font-size: 1.8em;
-            margin: 0;
-        }
+      .title {
+          font-size: 1.8em;
+          margin: 0;
+      }
 
-        .key-line {
-            color: #bbb;
-            margin: 5px 0 0 0;
-        }
+      .key-line {
+          color: #bbb;
+          margin: 5px 0 0 0;
+      }
 
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 1;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            overflow: auto;
-            background-color: rgba(0, 0, 0, 0.8);
-        }
+      .modal {
+          display: none;
+          position: fixed;
+          z-index: 1;
+          left: 0;
+          top: 0;
+          width: 100%;
+          height: 100%;
+          overflow: auto;
+          background-color: rgba(0, 0, 0, 0.8);
+      }
 
-        .modal-content {
-            background-color: #181818;
-            margin: 5% auto;
-            padding: 20px;
-            border-radius: 10px;
-            width: 90%;
-            max-width: 800px;
-            line-height: 1.6;
-            transform: scale(0.9);
-            opacity: 0;
-            transition: transform 0.3s ease, opacity 0.3s ease;
-        }
+      .modal-content {
+          background-color: #181818;
+          margin: 5% auto;
+          padding: 20px;
+          border-radius: 10px;
+          width: 100%;
+          max-width: 800px;
+          line-height: 1.6;
+          transform: scale(0.9);
+          opacity: 0;
+          transition: transform 0.3s ease, opacity 0.3s ease;
+          box-sizing: border-box;
+      }
 
-        .modal.show .modal-content {
-            transform: scale(1);
-            opacity: 1;
-        }
+      .modal.show .modal-content {
+          transform: scale(1);
+          opacity: 1;
+      }
 
-        .close {
-            color: #aaa;
-            float: right;
-            font-size: 28px;
-            font-weight: bold;
-            cursor: pointer;
-        }
+      .close {
+          color: #aaa;
+          float: right;
+          font-size: 28px;
+          font-weight: bold;
+          cursor: pointer;
+      }
 
-        .close:hover,
-        .close:focus {
-            color: #fff;
-            text-decoration: none;
-            cursor: pointer;
-        }
+      .close:hover,
+      .close:focus {
+          color: #fff;
+          text-decoration: none;
+          cursor: pointer;
+      }
 
-        .modal-content .title {
-            font-size: 1.8em;
-            color: #fff;
-            font-weight: normal;
-        }
+      .modal-content .title {
+          font-size: 1.8em;
+          color: #fff;
+          font-weight: normal;
+      }
 
-        .modal-content .essay-text {
-            color: #bbb;
-            white-space: pre-line;
-            margin-top: 10px;
-            font-family: "Century Gothic", CenturyGothic, Geneva, AppleGothic, sans-serif;
-        }
+      .modal-content .essay-text {
+          color: #bbb;
+          white-space: pre-line;
+          margin-top: 10px;
+          font-family: "Century Gothic", CenturyGothic, Geneva, AppleGothic, sans-serif;
+      }
 
-        @media screen and (max-width: 600px) {
-            .container, .modal-content {
-                width: 95%;
-            }
+      @media screen and (max-width: 600px) {
+          .container, .modal-content {
+              width: 95%;
+          }
 
-            .title {
-                font-size: 1.5em;
-            }
+          .title {
+              font-size: 1.5em;
+          }
 
-            .logo img {
-                width: 50%;
-            }
-        }
-        ::-webkit-scrollbar {
-            display: none;
-        }
-  
-        .container, .modal-content {
-            -ms-overflow-style: none; 
-            scrollbar-width: none; 
-        }
-  
-        .container::-webkit-scrollbar, .modal-content::-webkit-scrollbar {
-            display: none;
-        }
-    </style>
+          .logo img {
+              width: 50%;
+          }
+
+          .modal-content {
+              margin: 10% auto;
+              width: 90%;
+          }
+
+          .close {
+              font-size: 24px;
+          }
+      }
+
+      ::-webkit-scrollbar {
+          display: none;
+      }
+
+      .container, .modal-content {
+          -ms-overflow-style: none;
+          scrollbar-width: none;
+      }
+
+      .container::-webkit-scrollbar, .modal-content::-webkit-scrollbar {
+          display: none;
+      }
+  </style>
 </head>
 <body>
     <div class="logo">
