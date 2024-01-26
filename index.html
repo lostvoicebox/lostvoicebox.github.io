@@ -200,8 +200,11 @@
                     document.getElementById('modalContent').innerHTML = formattedText; 
                     const modal = document.getElementById('myModal');
                     modal.style.display = "block";
-                    setTimeout(() => modal.classList.add('show'), 10);
-                });
+                        requestAnimationFrame(() => {
+                            requestAnimationFrame(() => {
+                                modal.classList.add('show');
+                            });
+                        });
         }
 
         function closeModal() {
