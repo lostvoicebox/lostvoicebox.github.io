@@ -59,7 +59,7 @@
             width: 100%;
             height: 100%;
             overflow: auto;
-            background-color: rgba(0, 0, 0, 0);
+            background-color: rgba(0, 0, 0, 0.8);
             transition: background-color 0.3s ease;
         }
         .modal-content {
@@ -177,7 +177,6 @@
                     const modal = document.getElementById('myModal');
 
                     modal.style.display = "block";
-                    setTimeout(() => modal.style.backgroundColor = "rgba(0, 0, 0, 0.8)", 0);
 
                     requestAnimationFrame(() => {
                         requestAnimationFrame(() => {
@@ -192,9 +191,9 @@
             modal.classList.remove('show');
             setTimeout(() => {
                 modal.style.display = "none";
-                modal.style.backgroundColor = "rgba(0, 0, 0, 0)";
+                modal.style.backgroundColor = "rgba(0, 0, 0, 0.8)";
             }, 300);
-            modal.style.backgroundColor = "rgba(0, 0, 0, 0.8)";
+            modal.style.backgroundColor = "rgba(0, 0, 0, 0)";
         }
 
         window.onclick = function (event) {
