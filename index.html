@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Voice Box</title>
+    <style>
+        body {
+            font-family: "Century Gothic", CenturyGothic, Geneva, AppleGothic, sans-serif;
+            background-color: #000;
+            color: #fff;
+            margin: 0;
+            padding: 0;
+            padding-bottom: 50px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            font-weight: 400;
+        }
+
+        .logo {
+            margin-bottom: 10px;
+            text-align: center;
+            width: 100%;
+        }
+
+        .logo img {
+            max-width: 300px;
+            height: auto;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 800px;
+        }
+
+        .essay {
+            background-color: #111;
+            margin: 15px 0;
+            padding: 20px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .essay:hover {
+            background-color: #222;
+        }
+
+        .title {
+            font-size: 1.8em;
+            margin: 0;
+        }
+
+        .key-line {
+            color: #bbb;
+            margin: 5px 0 0 0;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.8);
+        }
+
+        .modal-content {
+            background-color: #181818;
+            margin: 5% auto;
+            padding: 20px;
+            border-radius: 10px;
+            width: 90%;
+            max-width: 800px;
+            line-height: 1.6;
+            transform: scale(0.9);
+            opacity: 0;
+            transition: transform 0.3s ease, opacity 0.3s ease;
+        }
+
+        .modal.show .modal-content {
+            transform: scale(1);
+            opacity: 1;
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: #fff;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .modal-content .title {
+            font-size: 1.8em;
+            color: #fff;
+            font-weight: normal;
+        }
+
+        .modal-content .essay-text {
+            color: #bbb;
+            white-space: pre-line;
+            margin-top: 10px;
+            font-family: "Century Gothic", CenturyGothic, Geneva, AppleGothic, sans-serif;
+        }
+
+        @media screen and (max-width: 600px) {
+            .container, .modal-content {
+                width: 95%;
+            }
+
+            .title {
+                font-size: 1.5em;
+            }
+
+            .logo img {
+                width: 50%;
+            }
+        }
+        ::-webkit-scrollbar {
+            display: none;
+        }
+  
+        .container, .modal-content {
+            -ms-overflow-style: none; 
+            scrollbar-width: none; 
+        }
+  
+        .container::-webkit-scrollbar, .modal-content::-webkit-scrollbar {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="logo">
+        <img src="voicebox.png" alt="Voice Box Logo">
+    </div>
+
+    <div class="container"></div>
+
+    <div id="myModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <h2 id="modalTitle" class="title"></h2>
+            <pre id="modalContent" class="essay-text"></pre>
+        </div>
+    </div>
+
+    <script>
+        const essays = [
+            { title: "Yours Truly", file: "1.txt", keyLine: "You are only ever right when you do not want to be." },
+            { title: "The End", file: "2.txt", keyLine: "I am not one to talk about Death." },
+        ];
+
+        const container = document.querySelector('.container');
+        essays.forEach(essay => {
+            const essayDiv = document.createElement('div');
+            essayDiv.className = 'essay';
+            essayDiv.innerHTML = `<p class="title">${essay.title}</p><p class="key-line">${essay.keyLine}</p>`;
+            essayDiv.onclick = () => openEssay(essay.title, essay.file);
+            container.appendChild(essayDiv);
+        });
+
+        function openEssay(title, file) {
+            fetch(file)
+                .then(response => response.text())
+                .then(text => {
+                    document.getElementById('modalTitle').innerText = title;
+                    document.getElementById('modalContent').innerText = text;
+                    const modal = document.getElementById('myModal');
+                    modal.style.display = "block";
+                    setTimeout(() => modal.classList.add('show'), 10);
+                });
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('myModal');
+            modal.classList.remove('show');
+            setTimeout(() => modal.style.display = "none", 300);
+        }
+
+        window.onclick = function(event) {
+            if (event.target == theModal) {
+                closeModal();
+            }
+        }
+    </script>
+</body>
+</html>
