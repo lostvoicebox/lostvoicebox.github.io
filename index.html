@@ -11,27 +11,43 @@
             color: #fff;
             margin: 0;
             padding: 0;
-            padding-bottom: 50px;
             display: flex;
             flex-direction: column;
             align-items: center;
             font-weight: 400;
         }
-        .logo {
-            margin-top: -20px;
-            margin-bottom: -35px;
-            text-align: center;
-            width: 100%;
+        .selection-box {
+            display: flex;
+            justify-content: center;
+            width: 90%;
+            max-width: 800px;
+            margin-top: 30px;
         }
-        .logo img {
-            max-width: 300px;
-            height: auto;
+        .selection-option {
+            flex-grow: 1;
+            background-color: #111;
+            padding: 20px;
+            border-radius: 10px;
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.3s ease;
+            font-family: "Century Gothic", CenturyGothic, Geneva, AppleGothic, sans-serif;
+            font-size: 1.8em;
+        }
+        .selection-option:first-child {
+            margin-right: 5px;
+        }
+        .selection-option:last-child {
+            margin-left: 5px;
+        }
+        .selection-option.active {
+            background-color: #222;
         }
         .container {
             width: 90%;
             max-width: 800px;
         }
-        .essay {
+        .essay, .project {
             background-color: #111;
             margin: 15px 0;
             padding: 20px;
@@ -39,7 +55,7 @@
             cursor: pointer;
             transition: all 0.3s ease;
         }
-        .essay:hover {
+        .essay:hover, .project:hover {
             background-color: #222;
         }
         .title {
@@ -100,21 +116,26 @@
             color: #fff;
             font-weight: normal;
         }
-        .modal-content .essay-text {
+        .modal-content .essay-text, .modal-content .project-text {
             color: #bbb;
             white-space: pre-line;
             margin-top: 10px;
             font-family: "Century Gothic", CenturyGothic, Geneva, AppleGothic, sans-serif;
         }
+        a {
+            color: #fff;
+            text-decoration: underline;
+        }
+        a:hover {
+            color: #fff;
+            text-decoration: none;
+        }
         @media screen and (max-width: 600px) {
-            .container, .modal-content {
+            .container, .modal-content, .selection-box {
                 width: 95%;
             }
             .title {
                 font-size: 1.5em;
-            }
-            .logo img {
-                width: 50%;
             }
             .modal-content {
                 margin: 10% auto;
@@ -122,6 +143,9 @@
             }
             .close {
                 font-size: 24px;
+            }
+            .selection-option {
+                font-size: 1.5em; 
             }
         }
         ::-webkit-scrollbar {
@@ -137,10 +161,11 @@
     </style>
 </head>
 <body>
-    <div class="logo">
-        <img src="voicebox.png" alt="Voice Box Logo">
+    <div class="selection-box">
+        <div class="selection-option active" id="writingTab">Words</div>
+        <div class="selection-option" id="codeTab">Works</div>
     </div>
-    <div class="container"></div>
+    <div class="container" id="contentContainer"></div>
     <div id="myModal" class="modal">
         <div class="modal-content">
             <span class="close" onclick="closeModal()">&times;</span>
@@ -155,26 +180,40 @@
             }
         }, { passive: false });
 
-        const essays = [
+        const writingContent = [
             { title: "Yours Truly", file: "1.txt", keyLine: "You are only ever right when you do not want to be." },
             { title: "The End", file: "2.txt", keyLine: "I am not one to talk about Death." },
             { title: "Eternal Flame", file: "3.txt", keyLine: "It was as if every corner of the house served only to reveal its age."},
         ];
 
-        const container = document.querySelector('.container');
-        essays.forEach(essay => {
-            const essayDiv = document.createElement('div');
-            essayDiv.className = 'essay';
-            essayDiv.innerHTML = `<p class="title">${essay.title}</p><p class="key-line">${essay.keyLine}</p>`;
-            essayDiv.onclick = () => openEssay(essay.title, essay.file);
-            container.appendChild(essayDiv);
-        });
+        const codingProjects = [
+            { title: "PCollect", file: "A.txt", keyLine: "AI-powered iOS app for K-Pop collectors."},
+            { title: "TSPython", file: "B.txt", keyLine: "Comprehensive Python tutorial platform."},
+            { title: "NGS Pipeline", file: "C.txt", keyLine: "Next-Generation Sequencing (NGS) pipeline for DNA/RNA analysis."},
+        ];
 
-        function openEssay(title, file) {
+        const container = document.querySelector('.container');
+        const writingTab = document.getElementById('writingTab');
+        const codeTab = document.getElementById('codeTab');
+
+        function loadContent(contentType) {
+            container.innerHTML = '';
+            contentType.forEach(item => {
+                const div = document.createElement('div');
+                div.className = contentType === writingContent ? 'essay' : 'project';
+                div.innerHTML = `<p class="title">${item.title}</p><p class="key-line">${item.keyLine}</p>`;
+                div.onclick = () => openItem(item.title, item.file);
+                container.appendChild(div);
+            });
+        }
+
+        function openItem(title, file) {
             fetch(file)
                 .then(response => response.text())
                 .then(text => {
-                    const formattedText = text.replace(/\*(.*?)\*/g, "<i>$1</i>");
+                    const formattedText = text
+                    .replace(/\*(.*?)\*/g, "<i>$1</i>")
+                    .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank">$1</a>');
 
                     document.getElementById('modalTitle').innerText = title;
                     document.getElementById('modalContent').innerHTML = formattedText;
@@ -202,6 +241,20 @@
                 closeModal();
             }
         }
+
+        writingTab.addEventListener('click', () => {
+            writingTab.classList.add('active');
+            codeTab.classList.remove('active');
+            loadContent(writingContent);
+        });
+
+        codeTab.addEventListener('click', () => {
+            codeTab.classList.add('active');
+            writingTab.classList.remove('active');
+            loadContent(codingProjects);
+        });
+
+        loadContent(writingContent);
     </script>
 </body>
 </html>
