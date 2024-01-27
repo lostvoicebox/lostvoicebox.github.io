@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>TKS</title>
+    <style>
+        body {
+            font-family: "Century Gothic", CenturyGothic, Geneva, AppleGothic, sans-serif;
+            background-color: #000;
+            color: #fff;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            font-weight: 400;
+        }
+        .selection-box {
+            display: flex;
+            justify-content: center;
+            width: 90%;
+            max-width: 800px;
+            margin-top: 30px;
+        }
+        .selection-option {
+            flex-grow: 1;
+            background-color: #111;
+            padding: 20px;
+            border-radius: 10px;
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.3s ease;
+            font-family: "Century Gothic", CenturyGothic, Geneva, AppleGothic, sans-serif;
+            font-size: 1.8em;
+        }
+        .selection-option:first-child {
+            margin-right: 6px;
+        }
+        .selection-option:last-child {
+            margin-left: 6px;
+        }
+        .selection-option.active {
+            background-color: #222;
+        }
+        .container {
+            width: 90%;
+            max-width: 800px;
+        }
+        .essay, .project {
+            background-color: #111;
+            margin: 15px 0;
+            padding: 20px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .essay:hover, .project:hover {
+            background-color: #222;
+        }
+        .title {
+            font-size: 1.8em;
+            margin: 0;
+        }
+        .key-line {
+            color: #bbb;
+            margin: 5px 0 0 0;
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0);
+            transition: background-color 0.3s ease;
+        }
+        .modal-content {
+            background-color: #181818;
+            margin: 5% auto;
+            padding: 20px;
+            border-radius: 10px;
+            width: 100%;
+            max-width: 800px;
+            line-height: 1.6;
+            transform: scale(0.9);
+            opacity: 0;
+            transition: transform 0.3s ease, opacity 0.3s ease;
+            box-sizing: border-box;
+        }
+        .modal.show .modal-content {
+            transform: scale(1);
+            opacity: 1;
+        }
+        .modal.show {
+            background-color: rgba(0, 0, 0, 0.8);
+        }
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .close:hover,
+        .close:focus {
+            color: #fff;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        .modal-content .title {
+            font-size: 1.8em;
+            color: #fff;
+            font-weight: normal;
+        }
+        .modal-content .essay-text, .modal-content .project-text {
+            color: #bbb;
+            white-space: pre-line;
+            margin-top: 10px;
+            font-family: "Century Gothic", CenturyGothic, Geneva, AppleGothic, sans-serif;
+        }
+        a {
+            color: #fff;
+            text-decoration: underline;
+        }
+        a:hover {
+            color: #fff;
+            text-decoration: none;
+        }
+        @media screen and (max-width: 600px) {
+            .container, .modal-content, .selection-box {
+                width: 95%;
+            }
+            .title {
+                font-size: 1.5em;
+            }
+            .modal-content {
+                margin: 10% auto;
+                width: 90%;
+            }
+            .close {
+                font-size: 24px;
+            }
+            .selection-option {
+                font-size: 1.5em; 
+            }
+        }
+        ::-webkit-scrollbar {
+            display: none;
+        }
+        .container, .modal-content {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        .container::-webkit-scrollbar, .modal-content::-webkit-scrollbar {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="selection-box">
+        <div class="selection-option" id="codeTab">Works</div>
+        <div class="selection-option" id="writingTab">Words</div>
+    </div>
+    <div class="container" id="contentContainer"></div>
+    <div id="myModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <h2 id="modalTitle" class="title"></h2>
+            <pre id="modalContent" class="essay-text"></pre>
+        </div>
+    </div>
+    <script>
+        document.addEventListener('touchmove', function (event) {
+            if (event.scale !== 1) {
+                event.preventDefault();
+            }
+        }, { passive: false });
+
+        const writingContent = [
+            { title: "Yours Truly", file: "1.txt", keyLine: "You are only ever right when you do not want to be." },
+            { title: "The End", file: "2.txt", keyLine: "Death creates urgency in a world that desperately needs it." },
+            { title: "Eternal Flame", file: "3.txt", keyLine: "It was as if every corner of the house served only to reveal its age."},
+        ];
+
+        const codingProjects = [
+            { title: "PCollect", file: "A.txt", keyLine: "AI-powered iOS app for K-Pop collectors."},
+            { title: "TSPython", file: "B.txt", keyLine: "Comprehensive Python tutorial platform."},
+            { title: "NGS Pipeline", file: "C.txt", keyLine: "Next-Generation Sequencing (NGS) pipeline for DNA/RNA analysis."},
+            { title: "Research Papers", file: "D.txt", keyLine: "Amateur math research papers from my sophomore year."},
+            { title: "Editorial Profiles", file: "E.txt", keyLine: "My work for The Stuyvesant Spectator and Hudson Valley One."},
+        ];
+
+        const container = document.querySelector('.container');
+        const writingTab = document.getElementById('writingTab');
+        const codeTab = document.getElementById('codeTab');
+
+        function loadContent(contentType) {
+            container.innerHTML = '';
+            contentType.forEach(item => {
+                const div = document.createElement('div');
+                div.className = contentType === writingContent ? 'essay' : 'project';
+                div.innerHTML = `<p class="title">${item.title}</p><p class="key-line">${item.keyLine}</p>`;
+                div.onclick = () => openItem(item.title, item.file);
+                container.appendChild(div);
+            });
+        }
+
+        function openItem(title, file) {
+            fetch(file)
+                .then(response => response.text())
+                .then(text => {
+                    const formattedText = text
+                    .replace(/\*(.*?)\*/g, "<i>$1</i>")
+                    .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank">$1</a>');
+
+                    document.getElementById('modalTitle').innerText = title;
+                    document.getElementById('modalContent').innerHTML = formattedText;
+                    const modal = document.getElementById('myModal');
+
+                    modal.style.display = "block";
+                    modal.scrollTop = 0;
+                    requestAnimationFrame(() => {
+                        modal.classList.add('show');
+                    });
+                });
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('myModal');
+            modal.classList.remove('show');
+            setTimeout(() => {
+                modal.style.display = "none";
+            }, 300);
+        }
+
+        window.onclick = function(event) {
+            const modalContent = document.querySelector('.modal-content');
+            const modal = document.getElementById('myModal');
+            if (event.target === modal && !modalContent.contains(event.target)) {
+                closeModal();
+            }
+        }
+
+        writingTab.addEventListener('click', () => {
+            writingTab.classList.add('active');
+            codeTab.classList.remove('active');
+            loadContent(writingContent);
+        });
+
+        codeTab.addEventListener('click', () => {
+            codeTab.classList.add('active');
+            writingTab.classList.remove('active');
+            loadContent(codingProjects);
+        });
+
+        loadContent(codingProjects);
+        codeTab.classList.add('active');
+    </script>
+</body>
+</html>
