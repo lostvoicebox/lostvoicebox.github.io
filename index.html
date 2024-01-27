@@ -162,8 +162,8 @@
 </head>
 <body>
     <div class="selection-box">
-        <div class="selection-option active" id="writingTab">Words</div>
         <div class="selection-option" id="codeTab">Works</div>
+        <div class="selection-option" id="writingTab">Words</div>
     </div>
     <div class="container" id="contentContainer"></div>
     <div id="myModal" class="modal">
@@ -256,7 +256,8 @@
             loadContent(codingProjects);
         });
 
-        loadContent(writingContent);
+        loadContent(codingProjects);
+        codeTab.classList.add('active');
     </script>
 </body>
 </html>
