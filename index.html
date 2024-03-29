@@ -45,6 +45,11 @@
             justify-content: center;
             align-items: center;
         }
+        .selection-option[disabled] {
+            opacity: 0.5;
+            pointer-events: none;
+            cursor: not-allowed;
+        }
         .selection-option:first-child {
             margin-right: 6px;
         }
@@ -175,7 +180,7 @@
 <body>
     <div class="selection-box">
         <div class="selection-option" id="codeTab">Works</div>
-        <div class="selection-option" id="writingTab">Words</div>
+        <div class="selection-option" id="writingTab" disabled>Words</div>
     </div>
     <div class="container" id="contentContainer"></div>
     <div id="myModal" class="modal">
