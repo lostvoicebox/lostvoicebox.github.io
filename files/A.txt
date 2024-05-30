@@ -1,3 +1,3 @@
-As a passionate K-Pop photocard collector, I sought a more organized and efficient way to manage my growing collection. This led me to develop [PCollect](https://pcollect.app), a mobile app designed in SwiftUI and Xcode, tailored specifically toward collectors like myself. PCollect, now with over 40,000 downloads, incorporates computer vision for easy uploading, augmented reality for an immersive experience, and digital inventory for tracking and sharing.
+As a passionate K-Pop photocard collector, I developed [PCollect](https://pcollect.app), a mobile app in SwiftUI and Xcode, to organize my growing collection. With over 40,000 downloads, PCollect uses computer vision for easy uploads, augmented reality for immersive experiences, and digital inventory for tracking and sharing.
 
 As of May 2024, PCollect is also available on Android (Kotlin).
