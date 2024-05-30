@@ -200,8 +200,6 @@
         const writingContent = [
             { title: "Editorial Profiles", file: "files/D.txt", keyLine: "My work for The Stuyvesant Spectator and Hudson Valley One."},
             { title: "Yours Truly", file: "files/1.txt", keyLine: "You are only ever right when you do not want to be." }
-            //{ title: "The End", file: "files/2.txt", keyLine: "Death creates urgency in a world that desperately needs it." },
-            //{ title: "Eternal Flame", file: "files/3.txt", keyLine: "It was as if every corner of the house served only to reveal its age."},
         ];
 
         const codingProjects = [
@@ -221,7 +219,14 @@
                 const div = document.createElement('div');
                 div.className = contentType === writingContent ? 'essay' : 'project';
                 div.innerHTML = `<p class="title">${item.title}</p><p class="key-line">${item.keyLine}</p>`;
-                div.onclick = () => openItem(item.title, item.file);
+                if (item.file === "") {
+                    div.classList.add('disabled');
+                    div.style.opacity = '0.5';
+                    div.style.pointerEvents = 'none';
+                    div.style.cursor = 'not-allowed';
+                } else {
+                    div.onclick = () => openItem(item.title, item.file);
+                }
                 container.appendChild(div);
             });
         }
