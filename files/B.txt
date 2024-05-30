@@ -1,1 +1,1 @@
-As a dedicated Python tutor for the Metis Project, I recognized the need for a centralized, accessible platform for my students. This inspired me to create [TSPython](https://tspython.com), a comprehensive website that houses all my lessons and resources in one convenient location.
+While tutoring Python for the Metis Project, I recognized the need for a centralized, accessible platform for my students. This inspired me to create [TSPython](https://tspython.com), a comprehensive website that houses all my lessons and resources in one convenient location.
