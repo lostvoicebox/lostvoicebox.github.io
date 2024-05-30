@@ -181,8 +181,8 @@
 </head>
 <body>
     <div class="selection-box">
-        <div class="selection-option" id="codeTab">Innovate</div>
-        <div class="selection-option" id="writingTab">Inspire</div>
+        <div class="selection-option" id="firstTab"></div>
+        <div class="selection-option" id="secondTab"></div>
     </div>
     <div class="container" id="contentContainer"></div>
     <div id="myModal" class="modal">
@@ -199,6 +199,13 @@
             }
         }, { passive: false });
 
+        const pairs = [
+            ["Innovate", "Imagine"],
+            ["Systems", "Stories"],
+            ["Function", "Form"],
+            ["Works", "Words"]
+        ];
+
         const writingContent = [
             { title: "Editorial Profiles", file: "files/D.txt", keyLine: "My work for The Stuyvesant Spectator and Hudson Valley One."},
             { title: "Yours Truly", file: "files/1.txt", keyLine: "You are only ever right when you do not want to be." }
@@ -212,8 +219,8 @@
         ];
 
         const container = document.querySelector('.container');
-        const writingTab = document.getElementById('writingTab');
-        const codeTab = document.getElementById('codeTab');
+        const firstTab = document.getElementById('firstTab');
+        const secondTab = document.getElementById('secondTab');
 
         function loadContent(contentType) {
             container.innerHTML = '';
@@ -268,24 +275,31 @@
                 closeModal();
             }
         }
-    
+
         window.addEventListener('click', handleClickOutsideModal);
         window.addEventListener('touchend', handleClickOutsideModal);
 
-        writingTab.addEventListener('click', () => {
-            writingTab.classList.add('active');
-            codeTab.classList.remove('active');
-            loadContent(writingContent);
-        });
+        function randomizePairs() {
+            const randomPair = pairs[Math.floor(Math.random() * pairs.length)];
+            firstTab.textContent = randomPair[0];
+            secondTab.textContent = randomPair[1];
+        }
 
-        codeTab.addEventListener('click', () => {
-            codeTab.classList.add('active');
-            writingTab.classList.remove('active');
+        firstTab.addEventListener('click', () => {
+            firstTab.classList.add('active');
+            secondTab.classList.remove('active');
             loadContent(codingProjects);
         });
 
+        secondTab.addEventListener('click', () => {
+            secondTab.classList.add('active');
+            firstTab.classList.remove('active');
+            loadContent(writingContent);
+        });
+
+        randomizePairs();
         loadContent(codingProjects);
-        codeTab.classList.add('active');
+        firstTab.classList.add('active');
     </script>
 </body>
 </html>
