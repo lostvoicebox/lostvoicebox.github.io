@@ -22,17 +22,19 @@
             flex-direction: column;
             align-items: center;
             font-weight: 400;
-            margin-bottom: 10px;
+            margin-bottom: 15px;
         }
-        .selection-box {
+        .about-box, .selection-box {
             display: flex;
             justify-content: center;
             width: 90%;
             max-width: 800px;
-            margin-top: 30px;
+            margin-top: 15px;
         }
-        .selection-option {
-            flex-grow: 1;
+        .about-box {
+          margin-top: 30px;
+        }
+        .selection-option, .about-option {
             background-color: #111;
             padding: 20px;
             border-radius: 10px;
@@ -44,21 +46,21 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            width: 50%;
             box-sizing: border-box;
+            flex: 1;
         }
-        .selection-option[disabled] {
+      .selection-option:not(:last-child) {
+          margin-right: 15px;
+      }
+        .selection-option[disabled], .about-option[disabled] {
             opacity: 0.5;
             pointer-events: none;
             cursor: not-allowed;
         }
-        .selection-option:first-child {
-            margin-right: 6px;
-        }
-        .selection-option:last-child {
-            margin-left: 6px;
-        }
         .selection-option.active {
+            background-color: #222;
+        }
+        .about-option:hover, .selection-option:hover {
             background-color: #222;
         }
         .container {
@@ -137,7 +139,7 @@
         .modal-content .essay-text, .modal-content .project-text {
             color: #bbb;
             white-space: pre-line;
-            margin-top: 10px;
+            margin-top: 15px;
             font-family: "Century Gothic", CenturyGothic, Geneva, AppleGothic, sans-serif;
         }
         a {
@@ -149,7 +151,7 @@
             text-decoration: none;
         }
         @media screen and (max-width: 600px) {
-            .container, .modal-content, .selection-box {
+            .container, .modal-content, .selection-box, .about-box {
                 width: 95%;
             }
             .title {
@@ -162,7 +164,7 @@
             .close {
                 font-size: 24px;
             }
-            .selection-option {
+            .selection-option, .about-option {
                 font-size: 1.5em; 
             }
         }
@@ -176,10 +178,12 @@
         .container::-webkit-scrollbar, .modal-content::-webkit-scrollbar {
             display: none;
         }
-        
     </style>
 </head>
 <body>
+    <div class="about-box">
+        <div class="about-option" id="aboutTab">About</div>
+    </div>
     <div class="selection-box">
         <div class="selection-option" id="firstTab"></div>
         <div class="selection-option" id="secondTab"></div>
@@ -223,6 +227,7 @@
         const container = document.querySelector('.container');
         const firstTab = document.getElementById('firstTab');
         const secondTab = document.getElementById('secondTab');
+        const aboutTab = document.getElementById('aboutTab');
 
         function loadContent(contentType) {
             container.innerHTML = '';
@@ -297,6 +302,11 @@
             secondTab.classList.add('active');
             firstTab.classList.remove('active');
             loadContent(writingContent);
+        });
+
+        aboutTab.addEventListener('click', () => {
+            openItem('About', 'files/about.txt');
+            aboutTab.classList.add('active');
         });
 
         randomizePairs();
