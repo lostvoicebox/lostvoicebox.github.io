@@ -23,7 +23,6 @@
             align-items: center;
             font-weight: 400;
             margin-bottom: 10px;
-            overflow-y: auto;
         }
         .about-box, .selection-box {
             display: flex;
@@ -98,7 +97,6 @@
             overflow: auto;
             background-color: rgba(0, 0, 0, 0);
             transition: background-color 0.3s ease;
-            overflow-y: auto;
         }
         .modal-content {
             background-color: #181818;
@@ -112,7 +110,6 @@
             opacity: 0;
             transition: transform 0.3s ease, opacity 0.3s ease;
             box-sizing: border-box;
-            overflow-y: auto;
         }
         .modal.show .modal-content {
             transform: scale(1);
@@ -202,7 +199,7 @@
     <script>
         document.addEventListener('touchmove', function (event) {
             if (event.scale !== 1) {
-                event.preventDefault();
+                //event.preventDefault();
             }
         }, { passive: false });
 
